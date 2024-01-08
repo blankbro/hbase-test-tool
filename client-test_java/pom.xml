@@ -15,4 +15,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <modules>
+        <module>spring-boot-hbase</module>
+    </modules>
+
 </project>

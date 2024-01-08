@@ -1,0 +1,15 @@
+server:
+  port: 8088
+spring:
+  application:
+    name: spring-boot-hbase
+  profiles:
+    active: local
+
+hbase:
+  conf:
+    confMaps:
+      'hbase.zookeeper.quorum': ''
+      'hbase.zookeeper.property.clientPort': '2181'
+      'zookeeper.znode.parent': ''
+      'hbase.rpc.timeout': '10000'
