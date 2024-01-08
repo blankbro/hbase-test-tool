@@ -1,10 +1,9 @@
-package io.github.blankbro.springboothbase.hbase;
+package io.github.blankbro.springbootbigtable.hbase;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import io.github.blankbro.springboothbase.hbase.config.HBaseConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.Cell;
@@ -13,7 +12,6 @@ import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -30,7 +28,7 @@ public class HBaseUtils {
 
     private Admin admin;
 
-    public HBaseUtils(@Autowired HBaseConfig hbaseConfig) {
+    public HBaseUtils() {
         Configuration conf = HBaseConfiguration.create();
         ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("hBase-pool-%d").build();
         ExecutorService executor = new ThreadPoolExecutor(
@@ -41,15 +39,8 @@ public class HBaseUtils {
                 threadFactory
         );
         try {
-            // 将hBase配置类中定义的配置加载到连接池中每个连接里
-            Map<String, String> confMap = hbaseConfig.getConfMaps();
-            if (null != confMap && !confMap.isEmpty()) {
-                for (Map.Entry<String, String> confEntry : confMap.entrySet()) {
-                    conf.set(confEntry.getKey(), confEntry.getValue());
-                }
-                Connection connection = ConnectionFactory.createConnection(conf, executor);
-                this.admin = connection.getAdmin();
-            }
+            Connection connection = ConnectionFactory.createConnection(conf, executor);
+            this.admin = connection.getAdmin();
         } catch (IOException e) {
             log.error("HBaseUtils实例初始化失败！错误信息为：{}", e.getMessage(), e);
         }

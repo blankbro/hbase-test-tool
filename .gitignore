@@ -1,1 +1,4 @@
 /.idea
+/**/application-sdp.yml
+/**/hbase-site.xml
+/**/target
