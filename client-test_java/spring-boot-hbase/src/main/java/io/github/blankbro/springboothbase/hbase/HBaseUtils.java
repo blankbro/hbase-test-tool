@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import io.github.blankbro.springboothbase.hbase.config.HBaseConfig;
+import io.github.blankbro.springboothbase.hbase.config.HBaseProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.Cell;
@@ -30,7 +30,7 @@ public class HBaseUtils {
 
     private Admin admin;
 
-    public HBaseUtils(@Autowired HBaseConfig hbaseConfig) {
+    public HBaseUtils(@Autowired HBaseProperties hbaseProperties) {
         Configuration conf = HBaseConfiguration.create();
         ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("hBase-pool-%d").build();
         ExecutorService executor = new ThreadPoolExecutor(
@@ -42,7 +42,7 @@ public class HBaseUtils {
         );
         try {
             // 将hBase配置类中定义的配置加载到连接池中每个连接里
-            Map<String, String> properties = hbaseConfig.getProperties();
+            Map<String, String> properties = hbaseProperties.getProperties();
             if (null != properties && !properties.isEmpty()) {
                 for (Map.Entry<String, String> entry : properties.entrySet()) {
                     conf.set(entry.getKey(), entry.getValue());
