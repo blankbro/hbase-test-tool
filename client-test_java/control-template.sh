@@ -5,7 +5,7 @@ deploy_path="/root/github/hbase-test-tool/client-test_java/output"
 filePah="${deploy_path}/${jar_name}"
 envi="local"
 java_opts=""
-application_properties=""
+application_properties="--hbase.conf.properties.hbase.zookeeper.quorum= --hbase.conf.properties.zookeeper.znode.parent= "
 Start() {
     java $java_opts -jar ${filePah} -Dfile.encoding=utf-8 --spring.profiles.active=${envi} ${application_properties} -Djava.security.egd=file:/dev/./urandom --name=${name} &>/dev/null
 }

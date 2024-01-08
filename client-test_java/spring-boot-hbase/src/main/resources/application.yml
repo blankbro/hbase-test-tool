@@ -8,8 +8,14 @@ spring:
 
 hbase:
   conf:
-    confMaps:
-      'hbase.zookeeper.quorum': ''
-      'hbase.zookeeper.property.clientPort': '2181'
-      'zookeeper.znode.parent': ''
-      'hbase.rpc.timeout': '10000'
+    properties:
+      hbase:
+        zookeeper:
+          quorum: ''
+          property:
+            clientPort': '2181'
+        rpc:
+          timeout: '10000'
+      zookeeper:
+        znode:
+          parent: ''

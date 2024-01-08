@@ -42,10 +42,10 @@ public class HBaseUtils {
         );
         try {
             // 将hBase配置类中定义的配置加载到连接池中每个连接里
-            Map<String, String> confMap = hbaseConfig.getConfMaps();
-            if (null != confMap && !confMap.isEmpty()) {
-                for (Map.Entry<String, String> confEntry : confMap.entrySet()) {
-                    conf.set(confEntry.getKey(), confEntry.getValue());
+            Map<String, String> properties = hbaseConfig.getProperties();
+            if (null != properties && !properties.isEmpty()) {
+                for (Map.Entry<String, String> entry : properties.entrySet()) {
+                    conf.set(entry.getKey(), entry.getValue());
                 }
                 Connection connection = ConnectionFactory.createConnection(conf, executor);
                 this.admin = connection.getAdmin();

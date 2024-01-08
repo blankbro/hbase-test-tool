@@ -2,3 +2,4 @@
 /**/application-sdp.yml
 /**/hbase-site.xml
 /**/target
+/**/control-sdp.sh

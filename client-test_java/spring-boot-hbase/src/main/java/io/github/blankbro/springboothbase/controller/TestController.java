@@ -19,6 +19,7 @@ public class TestController {
 
     @GetMapping("/test-scan")
     public Object testScan(String tableName, String startRow, String stopRow, String[] families, String[] qualifiers) throws IOException {
+        log.info("tableName = {}, startRow = {}, stopRow = {}, families = {}, qualifiers = {}", tableName, startRow, stopRow, families, qualifiers);
         List<Map<String, Object>> maps = hBaseUtils.fuzzyQuery(tableName, startRow, stopRow, families, qualifiers);
         return maps;
     }
