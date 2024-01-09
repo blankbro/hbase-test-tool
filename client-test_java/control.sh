@@ -1,5 +1,6 @@
 #!/bin/bash
 jar_full_path=""
+jar_name=""
 jvm_opts=""
 app_prop=""
 operation=""
@@ -11,6 +12,7 @@ while [[ $# -gt 0 ]]; do
     case $key in
     --jar-full-path)
         jar_full_path=$2
+        jar_name=$(basename "$jar_full_path")
         shift
         shift
         ;;
@@ -46,16 +48,16 @@ if [[ -z $jar_full_path ]]; then
 fi
 
 Start() {
-    java $jvm_opts -jar ${jar_full_path} -Dfile.encoding=utf-8 ${app_prop} -Djava.security.egd=file:/dev/./urandom &>/dev/null
+    java $jvm_opts -jar ${jar_full_path} -Dfile.encoding=utf-8 ${app_prop} -Djava.security.egd=file:/dev/./urandom --name=${jar_name} &>/dev/null
 }
 
 Stop() {
-    pid=$(ps -ef | grep -n "$jar_full_path" | grep -v grep | grep -v kill | awk '{print $2}')
+    pid=$(ps -ef | grep -n "java.*--name=${jar_name}" | grep -v grep | grep -v kill | awk '{print $2}')
     if [ ${pid} ]; then
         kill ${pid}
         for ((i = 0; i < 10; ++i)); do
             sleep 1
-            pid=$(ps -ef | grep -n "$jar_full_path" | grep -v grep | grep -v kill | awk '{print $2}')
+            pid=$(ps -ef | grep -n "java.*--name=${jar_name}" | grep -v grep | grep -v kill | awk '{print $2}')
             if [ ${pid} ]; then
                 echo -e ".\c"
             else
@@ -63,7 +65,7 @@ Stop() {
                 break
             fi
         done
-        pid=$(ps -ef | grep -n "$jar_full_path" | grep -v grep | grep -v kill | awk '{print $2}')
+        pid=$(ps -ef | grep -n "java.*--name=${jar_name}" | grep -v grep | grep -v kill | awk '{print $2}')
         if [ ${pid} ]; then
             echo 'Kill Process!'
             kill -9 ${pid}
