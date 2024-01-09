@@ -39,7 +39,7 @@ public class HBaseUtils {
                 threadFactory
         );
         try {
-            Connection connection = ConnectionFactory.createConnection(conf, executor);
+            this.connection = ConnectionFactory.createConnection(conf, executor);
             this.admin = connection.getAdmin();
         } catch (IOException e) {
             log.error("HBaseUtils实例初始化失败！错误信息为：{}", e.getMessage(), e);

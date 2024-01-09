@@ -47,7 +47,7 @@ public class HBaseUtils {
                 for (Map.Entry<String, String> entry : properties.entrySet()) {
                     conf.set(entry.getKey(), entry.getValue());
                 }
-                Connection connection = ConnectionFactory.createConnection(conf, executor);
+                this.connection = ConnectionFactory.createConnection(conf, executor);
                 this.admin = connection.getAdmin();
             }
         } catch (IOException e) {
