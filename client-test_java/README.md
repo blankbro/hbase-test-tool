@@ -3,7 +3,7 @@
 cat /etc/os-release
 ```
 
-# 压测环境准备（Ubuntu）
+## 压测环境准备（Ubuntu）
 ```shell
 # 安装必要的工具
 apt install default-jdk
@@ -13,7 +13,7 @@ apt install maven
 mvn -version
 ```
 
-# 压测环境准备（Centos）
+## 压测环境准备（Centos）
 1. 安装必要的工具
 
 ```shell
@@ -51,4 +51,64 @@ source /etc/profile
 
 # 验证Maven安装
 mvn -version
+```
+
+## spring-boot-hbase 启动步骤
+
+```shell
+# 拉取脚本
+mkdir -p ~/github
+cd ~/github
+git clone https://github.com/blankbro/hbase-test-tool.git
+
+# 获取最新代码
+cd ~/github/hbase-test-tool/client-test_java
+git pull
+
+# 编译
+./build.sh spring-boot-hbase
+
+# 停止
+./control.sh --jar-full-path ~/github/hbase-test-tool/client-test_java/output/spring-boot-hbase.jar --operation stop
+
+# 启动
+./control.sh --jar-full-path ~/github/hbase-test-tool/client-test_java/output/spring-boot-hbase.jar --operation start --app_prop "--hbase.conf.properties.hbase.zookeeper.quorum=xxxx --hbase.conf.properties.zookeeper.znode.parent=xxxx --hbase.conf.properties.hbase.zookeeper.property.clientPort=2181 --hbase.conf.properties.hbase.rpc.timeout=10000" &
+
+# 看日志
+tail -f logs/info.log
+```
+
+## spring-boot-bigtable 启动步骤
+
+```shell
+# 拉取脚本
+mkdir -p ~/github
+cd ~/github
+git clone https://github.com/blankbro/hbase-test-tool.git
+
+# 编写自己的 hbase-site.xml 
+cp ~/github/hbase-test-tool/client-test_java/spring-boot-bigtable/src/main/resources/hbase-site-template.xml ~/github/hbase-test-tool/client-test_java/spring-boot-bigtable/src/main/resources/hbase-site.xml
+vim ~/github/hbase-test-tool/client-test_java/spring-boot-bigtable/src/main/resources/hbase-site.xml 
+
+# 获取最新代码
+cd ~/github/hbase-test-tool/client-test_java/
+git pull
+
+# 编译
+./build.sh spring-boot-bigtable
+
+# 停止
+./control.sh --jar-full-path ~/github/hbase-test-tool/client-test_java/output/spring-boot-bigtable.jar --operation stop
+
+# 启动
+./control.sh --jar-full-path ~/github/hbase-test-tool/client-test_java/output/spring-boot-bigtable.jar --operation start  &
+
+# 看日志
+tail -f logs/info.log
+```
+
+## 测试接口
+
+```shell
+curl http://localhost:8088/test-scan\?tableName\=xxxx\&startRow\=xxxx\&stopRow\=xxx\&families\=xxx,xxx\&qualifiers\=xxx,xxx
 ```
