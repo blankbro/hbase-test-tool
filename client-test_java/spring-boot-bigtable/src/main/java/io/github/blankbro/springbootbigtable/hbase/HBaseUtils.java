@@ -108,6 +108,12 @@ public class HBaseUtils {
      * @throws Exception
      */
     public List<Map<String, Object>> fuzzyQuery(String tableName, String startRow, String stopRow, String[] families, String[] qualifiers) throws IOException {
+        if (families == null || families.length == 0) {
+            throw new RuntimeException("families不允许为空");
+        }
+        if (qualifiers != null && qualifiers.length != 0 && families.length != 1 && families.length != qualifiers.length) {
+            throw new RuntimeException("families 和 qualifiers 数量不对应");
+        }
         Table table = connection.getTable(TableName.valueOf(tableName));
 
         Queue<Map<String, Object>> queue = Queues.newConcurrentLinkedQueue();
@@ -117,7 +123,8 @@ public class HBaseUtils {
         scan.withStopRow(stopRow.getBytes(), true);
         if (qualifiers.length > 0) {
             for (int i = 0; i < qualifiers.length; i++) {
-                scan.addColumn(families[i].getBytes(), qualifiers[i].getBytes());
+                String family = families.length == 1 ? families[0] : families[i];
+                scan.addColumn(family.getBytes(), qualifiers[i].getBytes());
             }
         }
 

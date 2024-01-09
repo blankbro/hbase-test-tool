@@ -3,3 +3,4 @@
 /**/hbase-site.xml
 /**/target
 /**/control-sdp.sh
+/**/RowkeyGenerateTest.java
