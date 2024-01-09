@@ -41,7 +41,7 @@ if [[ -z $operation ]]; then
 fi
 
 if [[ -z $jar_full_path ]]; then
-    echo "请提供 --jar_full_path {your jar full path}"
+    echo "请提供 --jar-full-path {your jar full path}"
     exit 1
 fi
 
