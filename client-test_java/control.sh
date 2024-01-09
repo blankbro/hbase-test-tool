@@ -35,6 +35,16 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+if [[ -z $operation ]]; then
+    echo "请提供 --operation {start|stop|restart}"
+    exit 1
+fi
+
+if [[ -z $jar_full_path ]]; then
+    echo "请提供 --jar_full_path {your jar full path}"
+    exit 1
+fi
+
 Start() {
     java $jvm_opts -jar ${jar_full_path} -Dfile.encoding=utf-8 ${app_prop} -Djava.security.egd=file:/dev/./urandom &>/dev/null
 }
